@@ -18,12 +18,11 @@
 #import "RicRecipe.h"
 #import "RicMenuItem.h"
 #import "RicRecipeMenu.h"
-
 #import <MJExtension/MJExtension.h>
 
 @interface DistrictViewController ()<RicMenuDelegate,RicMenuItemDelegate>
 
-@property (nonatomic, strong) RicMenuView *filterView;
+@property (nonatomic, strong) RicMenuView *menuView;
 
 @end
 
@@ -40,10 +39,10 @@
     
     RicMenuItem *rootItem = [[RicMenuItem alloc] initWithDelegate:self oriData:rootDataModel defaultSelections:nil];
     
-    _filterView = [[RicMenuView alloc] initWithFrame:RicBaseFilterViewContentBounds];
-    [_filterView setDelegate:self rootItem:rootItem];
+    _menuView = [[RicMenuView alloc] initWithFrame:RicBaseFilterViewContentBounds];
+    [_menuView setDelegate:self rootItem:rootItem];
     
-    [self.view addSubview:_filterView];
+    [self.view addSubview:_menuView];
 
     
     // Do any additional setup after loading the view, typically from a nib.
@@ -51,7 +50,7 @@
 
 - (void)getResult
 {
-    NSArray *result = _filterView.filteredLeafMenuItems;
+    NSArray *result = _menuView.filteredLeafMenuItems;
 }
 
 - (void)filterMenuDidClickedItem:(RicMenuItem *)item
