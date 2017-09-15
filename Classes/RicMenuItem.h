@@ -1,9 +1,9 @@
 //
 //  RicModel.h
-//  rice
+//  john
 //
-//  Created by 张礼焕 on 16/5/30.
-//  Copyright © 2016年 rice. All rights reserved.
+//  Created by john on 16/5/30.
+//  Copyright © 2016年 john. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -29,6 +29,7 @@
 @property (nonatomic, readonly) NSArray <id<RicMenuModelDataSource>>*subMenuItems;
 
 @property (nonatomic, readonly) BOOL isDefaultValue;
+
 // 这个方法会用来判断两个选项是不是同一个选项，用于构建默认筛选项的时候的判断
 - (BOOL)isEqual:(id<RicMenuModelDataSource>)object;
 
@@ -37,7 +38,6 @@
 @property (nonatomic, readonly) NSString *parentName;
 
 - (void)setParentName:(NSString *)parentName;
-
 
 @end
 // 某个节点是否允许对子节点的多选
@@ -80,7 +80,7 @@
 /**
    根节点
  */
-@property (nonatomic, strong, readonly) RicMenuItem *root;
+@property (nonatomic, weak, readonly) RicMenuItem *root;
 /**
    是否是叶子节点
  */
@@ -88,7 +88,7 @@
 /**
    子节点
  */
-@property (nonatomic, strong, readonly) NSArray <RicMenuItem *>* subMenuItems;
+@property (nonatomic, strong, readonly) NSArray <RicMenuItem *>*subMenuItems;
 /**
   原数据
  */
@@ -102,18 +102,18 @@
  */
 @property (nonatomic, assign, readonly) BOOL allSubMenusAreLeaves;
 /**
-   所在的层次,从0开始,第1栏的值为1
+   所在的层次,从0开始,第1栏的值为1（0所代表的depth不显示，因为root节点只有一个）显示从depth为1开始
  */
 @property (nonatomic, assign, readonly) NSInteger depth;
 
 /**
-  根节点的包含的字节点的层次深度
+  最深的节点
  */
-@property (nonatomic, assign, readonly) NSInteger totalDepth;
+@property (nonatomic, assign, readonly) NSInteger deepestDepth;
 /**
    做配置的代理
  */
-@property (nonatomic, weak) id<RicMenuItemDelegate>delegate;
+@property (nonatomic, weak, readonly) id<RicMenuItemDelegate>delegate;
 /**
    是否支持对子菜单的多选
  */
@@ -139,7 +139,7 @@
 /**
  设置选中状态
  */
-- (void)setIsSelected:(BOOL)isSelected;
+- (void)updateSelected:(BOOL)isSelected;
 
 /**
  清空不包含在items的叶子节点的选中状态

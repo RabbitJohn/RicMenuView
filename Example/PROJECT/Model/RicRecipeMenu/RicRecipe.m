@@ -2,7 +2,7 @@
 //  RicRecipe.m
 //  RicMenuView
 //
-//  Created by 张礼焕 on 2017/7/4.
+//  Created by john on 2017/7/4.
 //
 //
 

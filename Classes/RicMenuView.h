@@ -1,9 +1,9 @@
 //
 //  RicMenuView.h
-//  rice
+//  john
 //
-//  Created by 张礼焕 on 16/5/30.
-//  Copyright © 2016年 rice. All rights reserved.
+//  Created by john on 16/5/30.
+//  Copyright © 2016年 john. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -39,15 +39,15 @@
 @property (nonatomic,readonly,weak) id <RicMenuDelegate> delegate;
 
 // 根节点数据源
-@property (nonatomic, readonly,strong) RicMenuItem *rootData;
+@property (nonatomic, readonly,strong) RicMenuItem *rootItem;
 /**
    筛选结果
  */
-@property (nonatomic, readonly) NSArray <id<RicMenuModelDataSource>> *filteredResult;
+@property (nonatomic, readonly) NSArray <id<RicMenuModelDataSource>> *filteredLeafMenuItems;
 /**
    数据源
  */
-- (void)setDelegate:(id <RicMenuDelegate>)delegate rootData:(RicMenuItem *)rootData;
+- (void)setDelegate:(id <RicMenuDelegate>)delegate rootItem:(RicMenuItem *)rootItem;
 /**
   重新加载数据
  */

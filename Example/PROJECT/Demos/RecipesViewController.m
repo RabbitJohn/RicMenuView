@@ -2,7 +2,7 @@
 //  RecipesViewController.m
 //  RicMenuView
 //
-//  Created by 张礼焕 on 2017/7/20.
+//  Created by john on 2017/7/20.
 //
 //
 
@@ -39,10 +39,10 @@
     RicRecipeMenu* menu = [RicRecipeMenu new];
     [menu setValuesForKeysWithDictionary:menuDic];
     
-    RicMenuItem *filterModel = [[RicMenuItem alloc] initWithDelegate:self oriData:menu defaultSelections:nil];
+    RicMenuItem *rootItem = [[RicMenuItem alloc] initWithDelegate:self oriData:menu defaultSelections:nil];
         
     _filterView = [[RicMenuView alloc] initWithFrame:RicBaseFilterViewContentBounds];
-    [_filterView setDelegate:self rootData:filterModel];
+    [_filterView setDelegate:self rootItem:rootItem];
     
     [self.view addSubview:_filterView];
 
@@ -51,7 +51,7 @@
 
 - (void)getResult
 {
-    NSArray *result = _filterView.filteredResult;
+    NSArray *result = _filterView.filteredLeafMenuItems;
 }
 
 - (void)filterMenuDidClickedItem:(RicMenuItem *)item

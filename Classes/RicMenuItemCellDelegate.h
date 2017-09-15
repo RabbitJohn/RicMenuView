@@ -1,8 +1,8 @@
 //
 //  RicMenuItemCellDelegate.h
-//  Ric
+//  john
 //
-//  Created by 张礼焕 on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
@@ -15,9 +15,9 @@
 
 @required
 
-@property (nonatomic, readonly) RicMenuItem *filterModel;
+@property (nonatomic, readonly) RicMenuItem *menuItem;
 
-- (void)setFilterModel:(RicMenuItem *)filterModel;
+- (void)updateMenuItem:(RicMenuItem *)menuItem;
 
 @end
 

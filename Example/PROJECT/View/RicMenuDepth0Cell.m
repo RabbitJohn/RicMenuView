@@ -2,7 +2,7 @@
 //  RicMenuCell.m
 //  RicMenu
 //
-//  Created by rice on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
@@ -12,7 +12,7 @@
 @interface RicMenuDepth0Cell ()
 {
     BOOL __isSelected__;
-    RicMenuItem *__filterModel__;
+    RicMenuItem *__menuItem_;
 }
 /**
    当前title
@@ -72,20 +72,20 @@
 - (UIView *)selectedFlagView{
     return self.selectedFlag;
 }
-- (void)setFilterModel:(RicMenuItem *)filterModel{
-    __filterModel__ = filterModel;
-    self.titleLabel.text = __filterModel__.title;
+- (void)updateMenuItem:(RicMenuItem *)menuItem{
+    __menuItem_ = menuItem;
+    self.titleLabel.text = __menuItem_.title;
     // replace the color below
     
 //    self.backgroundColor = __filterModel__.isSelected ? [UIColor lightGrayColor]:[UIColor whiteColor];
     
-    self.selectedFlag.backgroundColor = __filterModel__.hasSubMenuSelected && !__filterModel__.isLeaf && !__filterModel__.isSelected ? [UIColor redColor]:[UIColor clearColor] ;
+    self.selectedFlag.backgroundColor = __menuItem_.hasSubMenuSelected && !__menuItem_.isLeaf && !__menuItem_.isSelected ? [UIColor redColor]:[UIColor clearColor] ;
     
     // do some changes
 }
 
-- (RicMenuItem *)filterModel{
-    return __filterModel__;
+- (RicMenuItem *)menuItem{
+    return __menuItem_;
 }
 
 @end

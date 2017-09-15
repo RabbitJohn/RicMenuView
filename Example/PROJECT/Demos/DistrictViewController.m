@@ -2,7 +2,7 @@
 //  ViewController.m
 //  RicMenu
 //
-//  Created by rice on 16/5/30.
+//  Created by john on 16/5/30.
 //
 //
 
@@ -35,13 +35,13 @@
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"district" ofType:@"json"]];
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     NSDictionary *realData = jsonDic[@"data"];
-    RicDistrictMenu *filterDataModel = [RicDistrictMenu new];
-    [filterDataModel setValuesForKeysWithDictionary:realData];
+    RicDistrictMenu *rootDataModel = [RicDistrictMenu new];
+    [rootDataModel setValuesForKeysWithDictionary:realData];
     
-    RicMenuItem *filterModel = [[RicMenuItem alloc] initWithDelegate:self oriData:filterDataModel defaultSelections:nil];
+    RicMenuItem *rootItem = [[RicMenuItem alloc] initWithDelegate:self oriData:rootDataModel defaultSelections:nil];
     
     _filterView = [[RicMenuView alloc] initWithFrame:RicBaseFilterViewContentBounds];
-    [_filterView setDelegate:self rootData:filterModel];
+    [_filterView setDelegate:self rootItem:rootItem];
     
     [self.view addSubview:_filterView];
 
@@ -51,7 +51,7 @@
 
 - (void)getResult
 {
-    NSArray *result = _filterView.filteredResult;
+    NSArray *result = _filterView.filteredLeafMenuItems;
 }
 
 - (void)filterMenuDidClickedItem:(RicMenuItem *)item
@@ -93,9 +93,9 @@
 - (void)configControllerOfMenu:(RicMenuItem *)menu controller:(RicMenuController *)controller
 {
     
-    RicMenuController *filterController = controller;
+    RicMenuController *subMenuController = controller;
     
-    filterController.heightForRowAtIndexPath = ^CGFloat(NSInteger depth,NSIndexPath *indexPath,RicMenuItem *filterModel){
+    subMenuController.heightForRowAtIndexPath = ^CGFloat(NSInteger depth,NSIndexPath *indexPath,RicMenuItem *subMenu){
         if(depth == 0){
             return 50.0f;
         }else if(depth == 1){
@@ -106,15 +106,15 @@
     };
     
     if(menu.depth == 0){
-        filterController.tableViewCellClass = [RicMenuDepth0Cell class];
+        subMenuController.tableViewCellClass = [RicMenuDepth0Cell class];
     }else if(menu.depth == 1){
         if([menu.tag isEqualToString:@"location_district"]){
-            filterController.tableViewCellClass = [RicMenuDepth1Cell class];
+            subMenuController.tableViewCellClass = [RicMenuDepth1Cell class];
         }else{
-            filterController.tableViewCellClass = [RicMenuDepth2Cell class];
+            subMenuController.tableViewCellClass = [RicMenuDepth2Cell class];
         }
     }else if (menu.depth == 2){
-        filterController.tableViewCellClass = [RicMenuDepth2Cell class];
+        subMenuController.tableViewCellClass = [RicMenuDepth2Cell class];
     }
 }
 

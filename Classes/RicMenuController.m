@@ -1,8 +1,8 @@
 //
 //  RicMenuController.m
-//  Ric
+//  john
 //
-//  Created by 张礼焕 on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
@@ -82,8 +82,8 @@
 {
     CGFloat height = 40.0f;
     if(self.heightForRowAtIndexPath){
-        RicMenuItem *filterModel = self.menuItem.subMenuItems[indexPath.row];
-        height = self.heightForRowAtIndexPath(self.menuItem.depth+1,indexPath,filterModel);
+        RicMenuItem *subMenuItem = self.menuItem.subMenuItems[indexPath.row];
+        height = self.heightForRowAtIndexPath(self.menuItem.depth+1,indexPath,subMenuItem);
     }
     
     return height;
@@ -93,9 +93,9 @@
 {
     UITableViewCell <RicMenuItemCellDelegate>*tableViewCell = [self.tableView dequeueReusableCellWithIdentifier:self.reusedId];
     
-    RicMenuItem *filterModel = self.menuItem.subMenuItems[indexPath.row];
+    RicMenuItem *subMenu = self.menuItem.subMenuItems[indexPath.row];
+    [tableViewCell updateMenuItem:subMenu];
     
-    tableViewCell.filterModel = filterModel;
     if(self.delegate && [self.delegate respondsToSelector:@selector(configureCellActionsForCell:)]){
         [self.delegate configureCellActionsForCell:tableViewCell];
     }
@@ -104,46 +104,45 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RicMenuItem *filterModel = self.menuItem.subMenuItems[indexPath.row];
-    self.currentSelectedModel = filterModel;
+    RicMenuItem *subMenu = self.menuItem.subMenuItems[indexPath.row];
+    self.currentSelectedModel = subMenu;
     if(self.menuItem.supportMutiChildrenSelected){
         
-        [filterModel setIsSelected:!filterModel.isSelected];
+        [subMenu updateSelected:!subMenu.isSelected];
 
     }else{
         [self.menuItem.subMenuItems enumerateObjectsUsingBlock:^(RicMenuItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if(obj != filterModel){
-                [obj setIsSelected: NO];
+            if(obj != subMenu){
+                [obj updateSelected: NO];
             }else{
-                [obj setIsSelected: YES];
+                [obj updateSelected: YES];
             }
         }];
     }
-
     if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectedFilterData:)])
     {
-        [self.delegate didSelectedFilterData:filterModel];
+        [self.delegate didSelectedFilterData:subMenu];
     }
-    if(self.menuItem.supportMutiChildrenSelected && filterModel.isSelected && filterModel.isLeaf){
+    if(self.menuItem.supportMutiChildrenSelected && subMenu.isSelected && subMenu.isLeaf){
     // 选中后是否还原为非选
-        if(filterModel.delegate && [filterModel.delegate respondsToSelector:@selector(supportMutiSelectionForItem:)])
+        if(subMenu.delegate && [subMenu.delegate respondsToSelector:@selector(supportMutiSelectionForItem:)])
         {
             //获取多选限制
             NSInteger maxSelectionCount = HUGE;
             
-            if(filterModel.delegate && [filterModel.delegate respondsToSelector:@selector(maxSelectionCountForDepth:parentItem:)])
+            if(subMenu.delegate && [subMenu.delegate respondsToSelector:@selector(maxSelectionCountForDepth:parentItem:)])
             {
-                maxSelectionCount = [filterModel.delegate maxSelectionCountForDepth:filterModel.depth parentItem:filterModel.parent];
+                maxSelectionCount = [subMenu.delegate maxSelectionCountForDepth:subMenu.depth parentItem:subMenu.parent];
             }
             
-            if(filterModel.delegate && [filterModel.delegate respondsToSelector:@selector(filterViewShouldSelectedItem:leftSelectCount:)] && maxSelectionCount > 0)
+            if(subMenu.delegate && [subMenu.delegate respondsToSelector:@selector(filterViewShouldSelectedItem:leftSelectCount:)] && maxSelectionCount > 0)
             {// 当前选项选中前已选的数量
-                NSInteger leftCount = maxSelectionCount-filterModel.parent.allSelectedLeaves.count + 1;
+                NSInteger leftCount = maxSelectionCount-subMenu.parent.allSelectedLeaves.count + 1;
                 // 是否置为非选.
-                BOOL shouldSelect = [filterModel.delegate filterViewShouldSelectedItem:filterModel leftSelectCount:leftCount];
+                BOOL shouldSelect = [subMenu.delegate filterViewShouldSelectedItem:subMenu leftSelectCount:leftCount];
                 if(!shouldSelect)
                 {
-                    [filterModel setIsSelected:NO];
+                    [subMenu updateSelected:NO];
                 }
             }
         }

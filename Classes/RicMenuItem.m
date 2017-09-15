@@ -1,27 +1,28 @@
 //
 //  RicModel.m
-//  rice
+//  john
 //
-//  Created by 张礼焕 on 16/5/30.
-//  Copyright © 2016年 rice. All rights reserved.
+//  Created by john on 16/5/30.
+//  Copyright © 2016年 john. All rights reserved.
 //
 
 #import "RicMenuItem.h"
 
 @interface RicMenuItem ()
-{
-    BOOL __isSelected__;
-}
+
 //@property (nonatomic, copy) NSString *tag;
+@property (nonatomic, weak) id<RicMenuItemDelegate>delegate;
 @property (nonatomic, weak) RicMenuItem *parent;
-@property (nonatomic, weak) RicMenuItem *theRoot;
+@property (nonatomic, weak) RicMenuItem *root;
 @property (nonatomic, strong) NSMutableArray <RicMenuItem*>*theSubMenuItems;
 @property (nonatomic, strong) id<RicMenuModelDataSource> itemValue;
 @property (nonatomic, copy) NSString *title;
 
-@property (nonatomic, assign) NSInteger totalDepth;
-@property (nonatomic, assign) NSInteger theDepth;
+@property (nonatomic, assign) NSInteger deepestDepth;
+@property (nonatomic, assign) NSInteger depth;
+
 @property (nonatomic, assign) BOOL isSelected;
+
 @property (nonatomic, strong) NSNumber *submenusPureLeaves;
 
 @property (nonatomic, strong) NSMutableArray *allTheLeaves;
@@ -69,8 +70,8 @@
         RicMenuItem *subItem = [RicMenuItem new];
         subItem.delegate = self.delegate;
         subItem.parent = self;
-        subItem.theDepth = self.theDepth + 1;
-        self.root.totalDepth = MAX(subItem.theDepth, self.root.totalDepth);
+        subItem.depth = self.depth + 1;
+        self.root.deepestDepth = MAX(subItem.depth, self.root.deepestDepth);
         if([oriSubData respondsToSelector:@selector(setParentName:)]){
             [oriSubData setParentName:subItem.parent.title];
         }
@@ -130,35 +131,20 @@
     return self.theSubMenuItems.count == 0;
 }
 
-- (NSInteger)depth{
-    
-    return self.theDepth;
-}
-
 - (NSArray *)subMenuItems{
     return self.theSubMenuItems;
 }
 
 - (RicMenuItem *)root
 {
-    if(_theRoot){
-        return _theRoot;
+    if(_root){
+        return _root;
     }
-    _theRoot = self;
-    while (_theRoot.depth != 0) {
-        _theRoot = _theRoot.parent;
+    _root = self;
+    while (_root.depth != 0) {
+        _root = _root.parent;
     }
-    return _theRoot;
-}
-
-- (void)setIsSelected:(BOOL)isSelected
-{
-    __isSelected__ = isSelected;
-}
-
-- (BOOL)isSelected
-{
-    return __isSelected__;
+    return _root;
 }
 
 - (BOOL)supportMutiChildrenSelected{
@@ -247,6 +233,10 @@
     [result makeObjectsPerformSelector:@selector(clearSelectedStatus)];
 }
 
+- (void)updateSelected:(BOOL)isSelected{
+    self.isSelected = isSelected;
+}
+
 - (void)clearAllSelectedStatus
 {
     [self clearSelectedStatusExclude:nil];
@@ -254,12 +244,12 @@
 
 - (void)clearSelectedStatus
 {
-    [self setIsSelected:NO];
+    [self updateSelected:NO];
 }
 
 - (void)makeSelected
 {
-    [self setIsSelected:YES];
+    [self updateSelected:YES];
 }
 
 @end

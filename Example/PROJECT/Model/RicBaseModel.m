@@ -2,8 +2,8 @@
 //  BaseModel.m
 //  RicMenuView
 //
-//  Created by rice on 15/9/25.
-//  Copyright © 2015年 ric. All rights reserved.
+//  Created by john on 15/9/25.
+//  Copyright © 2015年 john. All rights reserved.
 //
 
 #import "RicBaseModel.h"

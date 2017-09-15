@@ -2,17 +2,17 @@
 //  RicMenuDepth2Cell.h
 //  RicMenuView
 //
-//  Created by 张礼焕 on 2017/7/23.
+//  Created by john on 2017/7/23.
 //
 //
 
 #import <UIKit/UIKit.h>
 #import "RicMenuItemCellDelegate.h"
 
-@interface RicMenuDepth2Cell : UITableViewCell<RicMenuItemDelegate>
+@interface RicMenuDepth2Cell : UITableViewCell<RicMenuItemCellDelegate>
 
-@property (nonatomic, readonly) RicMenuItem *filterModel;
+@property (nonatomic, readonly) RicMenuItem *menuItem;
 
-- (void)setFilterModel:(RicMenuItem *)filterModel;
+- (void)updateMenuItem:(RicMenuItem *)menuItem;
 
 @end

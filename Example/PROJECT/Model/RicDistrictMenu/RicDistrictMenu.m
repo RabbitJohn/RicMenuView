@@ -2,7 +2,7 @@
 //  RicDistrictMenu.m
 //  RicMenu
 //
-//  Created by rice on 16/5/30.
+//  Created by john on 16/5/30.
 //
 //
 

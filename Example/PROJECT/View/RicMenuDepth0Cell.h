@@ -2,17 +2,17 @@
 //  RicMenuCell.h
 //  RicMenu
 //
-//  Created by rice on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
 #import <UIKit/UIKit.h>
 #import "RicMenuItemCellDelegate.h"
 
-@interface RicMenuDepth0Cell : UITableViewCell<RicMenuItemDelegate>
+@interface RicMenuDepth0Cell : UITableViewCell<RicMenuItemCellDelegate>
 
-@property (nonatomic, readonly) RicMenuItem *filterModel;
+@property (nonatomic, readonly) RicMenuItem *menuItem;
 
-- (void)setFilterModel:(RicMenuItem *)filterModel;
+- (void)updateMenuItem:(RicMenuItem *)menuItem;
 
 @end

@@ -1,9 +1,9 @@
 //
 //  RicMenuView.m
-//  rice
+//  john
 //
-//  Created by 张礼焕 on 16/5/30.
-//  Copyright © 2016年 rice. All rights reserved.
+//  Created by john on 16/5/30.
+//  Copyright © 2016年 john. All rights reserved.
 //
 
 #import "RicMenuView.h"
@@ -13,9 +13,9 @@
 // tableView中的索引代表tableView对应的层级depth.
 @property (nonatomic, strong) NSMutableArray <RicMenuController *>*tableViewControllers;
 
-
 @property (nonatomic, weak) id <RicMenuDelegate> delegate;
-@property (nonatomic, strong) RicMenuItem *rootData;
+
+@property (nonatomic, strong) RicMenuItem *rootItem;
 
 - (void)setUpSubViews;
 
@@ -44,10 +44,9 @@
     self.tableViewControllers = [NSMutableArray new];
 }
 
-- (void)setRootData:(RicMenuItem *)rootData{
-    
-    _rootData = rootData;
-   RicMenuController *controller = [self addTableViewForMenuNode:_rootData];
+- (void)setRootItem:(RicMenuItem *)rootItem{
+   _rootItem = rootItem;
+   RicMenuController *controller = [self addTableViewForMenuNode:_rootItem];
     [self checkoutDefaultsForController:controller];
 }
 
@@ -66,7 +65,7 @@
             }
         }];
         if(!subItem.isSelected){
-            subItem.isSelected = YES;
+            [subItem updateSelected:YES];
         }
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
         if([controller.tableView visibleCells].count > 0){
@@ -79,10 +78,10 @@
     }
 }
 
-- (void)setDelegate:(id <RicMenuDelegate>)delegate rootData:(RicMenuItem *)rootData{
+- (void)setDelegate:(id <RicMenuDelegate>)delegate rootItem:(RicMenuItem *)rootItem{
     // 先设置delegate后设置rootData,因为设置rootData的时候会refreshData.
     self.delegate = delegate;
-    self.rootData = rootData;
+    self.rootItem = rootItem;
 }
 
 - (RicMenuController *)addTableViewForMenuNode:(RicMenuItem *)menuNode
@@ -203,13 +202,13 @@
     }
 }
 
-- (NSArray <id<RicMenuModelDataSource>>*)filteredResult
+- (NSArray <id<RicMenuModelDataSource>>*)filteredLeafMenuItems
 {
     NSMutableArray *result = [NSMutableArray new];
     NSPredicate *pre = [NSPredicate predicateWithBlock:^BOOL(RicMenuItem * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return evaluatedObject.isSelected;
     }];
-    NSArray *filterItems = [self.rootData.allLeaves filteredArrayUsingPredicate: pre];
+    NSArray *filterItems = [self.rootItem.allLeaves filteredArrayUsingPredicate: pre];
     for(RicMenuItem *item in filterItems){
         if(item.itemValue){
             [result addObject:item.itemValue];

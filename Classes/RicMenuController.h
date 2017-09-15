@@ -1,8 +1,8 @@
 //
 //  RicMenuController.h
-//  Ric
+//  john
 //
-//  Created by 张礼焕 on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
@@ -28,7 +28,8 @@
 @property (nonatomic, strong) Class tableViewCellClass;
 /**
  */
-@property (nonatomic, copy) CGFloat(^heightForRowAtIndexPath)(NSInteger depth,NSIndexPath *indexPath,RicMenuItem *filterModel);
+@property (nonatomic, copy) CGFloat(^heightForRowAtIndexPath)(NSInteger depth,NSIndexPath *indexPath,RicMenuItem *menuItem);
+
 @property (nonatomic, strong) RicMenuItem *menuItem;
 
 
@@ -37,10 +38,6 @@
   设置tableView
  */
 @property (nonatomic, readonly) UITableView *tableView;
-/**
-   数据源包含子节点的一个根节点
- */
-@property (nonatomic, readonly) RicMenuItem *selectedSubItem;
 
 /**
    强制刷新数据

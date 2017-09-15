@@ -2,7 +2,7 @@
 //  RicMenuDepth1Cell.m
 //  RicMenu
 //
-//  Created by rice on 16/5/31.
+//  Created by john on 16/5/31.
 //
 //
 
@@ -44,13 +44,13 @@
 - (UIView *)selectedFlagView{
     return self.selectedFlag;
 }
-- (void)setFilterModel:(RicMenuItem *)filterModel{
-    __filterModel__ = filterModel;
+- (void)updateMenuItem:(RicMenuItem *)menuItem{
+    __filterModel__ = menuItem;
     
     self.titleLabel.text = __filterModel__.title;
 }
 
-- (RicMenuItem *)filterModel{
+- (RicMenuItem *)menuItem{
     return __filterModel__;
 }
 
